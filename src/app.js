@@ -4,32 +4,17 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const routes = require('./routes/index.js');
-const dotenv = require('dotenv')
-
-
-// require('./db.js');
+require('./db.js');
 
 // const server = express();
-
-// server.name = 'API';
-
-// server.use(express.json())
 
 // server.use(cors());
 
 const server = express()
 
-dotenv.config()
+server.name = 'API';
+server.use(express.json())
 
-server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
-server.use(bodyParser.json({
-  limit: '50mb',
-  verify: (req, res, buf) => {
-    req.rawBody = buf
-  }
-}))
-server.use(cookieParser())
-server.use(morgan('dev'))
 server.use(cors([
   {
       origin: "https://pi-dogs-sooty.vercel.app", //servidor que deseas que consuma o (*) en caso que sea acceso libre
@@ -46,6 +31,15 @@ server.use((req, res, next) => {
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
   next();
 });
+server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }))
+server.use(bodyParser.json({
+  limit: '50mb',
+  verify: (req, res, buf) => {
+    req.rawBody = buf
+  }
+}))
+server.use(cookieParser())
+server.use(morgan('dev'))
 
 server.use('/', routes);
 // Error catching endware.
