@@ -15,12 +15,11 @@ const server = express()
 server.name = 'API';
 server.use(express.json())
 
-server.use(cors([
+server.use(cors(
   {
-      origin: "https://pi-dogs-sooty.vercel.app", //servidor que deseas que consuma o (*) en caso que sea acceso libre
-      credentials: true
+      origin: "*"
   }
-]))
+))
 server.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Credentials", 'true');
